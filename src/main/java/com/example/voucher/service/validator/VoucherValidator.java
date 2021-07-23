@@ -14,14 +14,24 @@ import static java.util.Optional.of;
 public class VoucherValidator {
 
     public void validateVoucher(VoucherEntity voucherEntity) {
-        validate(voucherEntity)
+        validate(voucherEntity, false)
                 .ifPresent(validationException -> {
                     throw validationException;
                 });
     }
 
-    private Optional<VoucherValidationException> validate(VoucherEntity voucherEntity) {
-        if (voucherEntity.getValidUntil().isBefore(now())) {
+    public void validateNewVoucher(VoucherEntity voucherEntity) {
+        validate(voucherEntity, true)
+                .ifPresent(validationException -> {
+                    throw validationException;
+                });
+    }
+
+    private Optional<VoucherValidationException> validate(VoucherEntity voucherEntity, boolean isNewVoucher) {
+        if (isNewVoucher && voucherEntity.getPercentage() < 1 || voucherEntity.getPercentage() > 100) {
+            return of(new VoucherValidationException("Voucher with " + voucherEntity.getPercentage() + "% is " +
+                    "invalid!"));
+        } else if (voucherEntity.getValidUntil() != null && voucherEntity.getValidUntil().isBefore(now())) {
             return of(new VoucherValidationException("Validity expired for voucher with ID: " + voucherEntity.getId()));
         } else if (voucherEntity.getNumberOfRedemptions() != null && voucherEntity.getNumberOfRedemptions() < 1) {
             return of(new VoucherValidationException("Not enough redemptions for voucher with ID: " + voucherEntity.getId()));

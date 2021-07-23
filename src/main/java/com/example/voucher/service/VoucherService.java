@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +38,15 @@ public class VoucherService implements Redemption, Management {
 
     @Override
     public List<VoucherEntity> addVoucher(List<VoucherEntity> vouchers) {
-        vouchers.forEach(voucherEntity -> voucherEntity.setId(null));
-        return voucherRepository.saveAll(vouchers);
+        return vouchers.stream()
+                .map(this::addVoucher)
+                .collect(Collectors.toList());
+    }
+
+    private VoucherEntity addVoucher(VoucherEntity voucherEntity) {
+        validator.validateNewVoucher(voucherEntity);
+        voucherEntity.setId(null);
+        return voucherRepository.save(voucherEntity);
     }
 }
 

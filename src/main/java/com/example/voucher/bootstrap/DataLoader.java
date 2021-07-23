@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
 
 @Component
@@ -18,21 +19,25 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        voucherService.addVoucher(List.of(
-                VoucherEntity.builder()
-                        .percentage(10)
-                        .validUntil(of(2021, 7, 16, 12, 33))
-                        .numberOfRedemptions(3)
-                        .build(),
-                VoucherEntity.builder()
-                        .percentage(15)
-                        .validUntil(of(2022, 2, 26, 12, 33))
-                        .numberOfRedemptions(5)
-                        .build(),
-                VoucherEntity.builder()
-                        .percentage(25)
-                        .validUntil(of(2021, 11, 3, 12, 33))
-                        .numberOfRedemptions(1)
-                        .build()));
+//        voucherService.addVoucher(List.of(
+//                VoucherEntity.builder()
+//                        .percentage(20)
+//                        .validUntil(of(2023, 7, 16, 12, 33))
+//                        .numberOfRedemptions(3)
+//                        .build(),
+//                VoucherEntity.builder()
+//                        .percentage(15)
+//                        .validUntil(of(2022, 2, 26, 12, 33))
+//                        .numberOfRedemptions(5)
+//                        .build(),
+//                VoucherEntity.builder()
+//                        .percentage(50)
+//                        .validUntil(now().plusSeconds(10))
+//                        .numberOfRedemptions(1)
+//                        .build(),
+//                VoucherEntity.builder()
+//                        .percentage(5)
+//                        .validUntil(of(2021, 12, 26, 12, 33))
+//                        .build()));
     }
 }
